@@ -1,0 +1,37 @@
+
+public class DriverHelper {
+    //to centralize the driver into one spot!!! it is called "Singleton Pattern Design"
+
+    public static WebDriver driver;//instance variable
+    //we are creating private constructor
+
+    private DriverHelper(){}//nobody can access your driver I made my constructor driver private so no one can create an object
+
+    public static WebDriver getDriver(){
+
+        if(driver==null|| ((RemoteWebDriver)driver).getSessionId()==null){
+
+            //****USE IT WHEN GIVEN ID EXCEPTION
+        //    String browser="chrome";
+
+            switch (ConfigReader.readProperty("browser")) {
+                case "chrome":
+                    WebDriverManager.chromedriver().setup();
+                    driver=new ChromeDriver();
+                    break;
+
+                case "firefox":
+                    WebDriverManager.firefoxdriver().setup();
+                    break;
+
+                default:
+                    WebDriverManager.chromedriver().setup();
+                    driver=new ChromeDriver();
+                    break;
+            }
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(150));
+            driver.manage().window().maximize();
+        }
+        return driver;
+    }
+}
