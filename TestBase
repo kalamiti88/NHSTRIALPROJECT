@@ -1,0 +1,25 @@
+
+public class TestBase {
+    @Test
+    public void nhcTest() throws InterruptedException {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.navigate().to(ConfigReader.readProperty("NHSurl"));
+
+        WebElement login = driver.findElement(By.id("inputEmail"));
+        login.sendKeys(ConfigReader.readProperty("login"));
+
+        WebElement password = driver.findElement(By.id("inputPassword"));
+        password.sendKeys(ConfigReader.readProperty("password"));
+
+        Thread.sleep(3000);
+
+        WebElement singInButton = driver.findElement(By.xpath("//button[contains(text(),'Sign in')]"));
+        singInButton.click();
+
+        Assert.assertEquals("NHS patients", driver.getTitle());
+
+
+    }
+}
